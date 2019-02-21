@@ -1,11 +1,14 @@
 package br.com.caelum.ingresso.dao;
 
-import br.com.caelum.ingresso.model.Sala;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import br.com.caelum.ingresso.model.Sala;
+import br.com.caelum.ingresso.model.Sessao;
 
 /**
  * Created by nando on 03/03/17.
@@ -15,6 +18,10 @@ public class SalaDao {
 
     @PersistenceContext
     private EntityManager manager;
+    
+    public void save(Sessao sessao) {
+    	manager.persist(sessao);
+    }
 
     public Sala findOne(Integer id) {
 
@@ -31,5 +38,9 @@ public class SalaDao {
 
     public void delete(Integer id) {
         manager.remove(findOne(id));
+    }
+    
+    public List<Sessao> buscaSessoesDaSala(Sala sala){
+    	return manager.createQuery("select s from sessao s where s.sala = :sala", Sessao.class).setParameter("sala", sala).getResultList();
     }
 }

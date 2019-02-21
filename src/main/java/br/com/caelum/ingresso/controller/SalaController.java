@@ -1,16 +1,23 @@
 package br.com.caelum.ingresso.controller;
 
-import br.com.caelum.ingresso.dao.SalaDao;
-import br.com.caelum.ingresso.model.Sala;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-import java.util.Optional;
+import br.com.caelum.ingresso.dao.SalaDao;
+import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Sala;
 
 /**
  * Created by nando on 03/03/17.
@@ -20,6 +27,9 @@ public class SalaController {
 
     @Autowired
     private SalaDao salaDao;
+    
+    @Autowired
+    private SessaoDao sessaoDao;
 
 
     @GetMapping({"/admin/sala", "/admin/sala/{id}"})
@@ -34,8 +44,6 @@ public class SalaController {
 
         return modelAndView;
     }
-
-
 
 
     @PostMapping("/admin/sala")
@@ -75,9 +83,11 @@ public class SalaController {
     public ModelAndView listaLugares(@PathVariable("id") Integer id) {
 
         ModelAndView modelAndView = new ModelAndView("lugar/lista");
-
+        
         Sala sala = salaDao.findOne(id);
         modelAndView.addObject("sala", sala);
+        
+        modelAndView.addObject("sessoes", sessaoDao.buscaSessoesDaSala(sala));
 
         return modelAndView;
     }
