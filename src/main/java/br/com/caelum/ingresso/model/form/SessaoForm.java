@@ -58,11 +58,11 @@ public class SessaoForm {
 		this.horario = horario;
 	}
 
-	public Integer getFilmeID() {
+	public Integer getFilmeId() {
 		return filmeID;
 	}
 
-	public void setFilmeID(Integer filmeID) {
+	public void setFilmeId(Integer filmeID) {
 		this.filmeID = filmeID;
 	}
 	
