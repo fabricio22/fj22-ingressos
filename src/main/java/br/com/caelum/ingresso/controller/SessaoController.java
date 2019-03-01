@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Carrinho;
 import br.com.caelum.ingresso.model.ImagemCapa;
 import br.com.caelum.ingresso.model.Sessao;
 import br.com.caelum.ingresso.model.TipoDeIngresso;
@@ -39,6 +40,49 @@ public class SessaoController {
 	@Autowired
     private OmdbClient client;
 	
+	@Autowired
+	private Carrinho carrinho;
+	
+	public SalaDao getSalaDao() {
+		return salaDao;
+	}
+
+	public void setSalaDao(SalaDao salaDao) {
+		this.salaDao = salaDao;
+	}
+
+	public FilmeDao getFilmeDao() {
+		return filmeDao;
+	}
+
+	public void setFilmeDao(FilmeDao filmeDao) {
+		this.filmeDao = filmeDao;
+	}
+
+	public SessaoDao getSessaoDao() {
+		return sessaoDao;
+	}
+
+	public void setSessaoDao(SessaoDao sessaoDao) {
+		this.sessaoDao = sessaoDao;
+	}
+
+	public OmdbClient getClient() {
+		return client;
+	}
+
+	public void setClient(OmdbClient client) {
+		this.client = client;
+	}
+
+	public Carrinho getCarrinho() {
+		return carrinho;
+	}
+
+	public void setCarrinho(Carrinho carrinho) {
+		this.carrinho = carrinho;
+	}
+
 	@GetMapping("/admin/sessao")
 	@Transactional
 	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm form) {
@@ -81,6 +125,7 @@ public class SessaoController {
     	Optional<ImagemCapa> imagemCapa = client.request(sessao.getFilme(), ImagemCapa.class);
     	
     	modelAndView.addObject("sessao", sessao);
+    	modelAndView.addObject("carrinho", carrinho);
     	modelAndView.addObject("imagemCapa", imagemCapa.orElse(new ImagemCapa()));
     	modelAndView.addObject("tiposDeIngressos", TipoDeIngresso.values());
     	
